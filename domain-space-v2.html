@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KDP — 도메인 스페이스</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" as="style" crossorigin="anonymous"
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <style>
+    :root {
+      color-scheme: light;
+      --kakao-yellow: #F9DC00;
+      --kakao-yellow-hover: #EDD000;
+      --kakao-yellow-soft: #FFFDE7;
+      --primary-text: #191919;
+      --secondary-text: #5C5C5C;
+      --muted-text: #9E9E9E;
+      --border: #E8E8E8;
+      --border-focus: #BDBDBD;
+      --bg-page: #F5F5F5;
+      --bg-surface: #FFFFFF;
+      --bg-surface-2: #FAFAFA;
+      --blue: #1976D2;
+      --blue-soft: #E3F2FD;
+      --green: #2E7D32;
+      --green-mid: #43A047;
+      --green-soft: #E8F5E9;
+      --red: #C62828;
+      --red-mid: #E53935;
+      --red-soft: #FFEBEE;
+      --orange: #E65100;
+      --orange-mid: #FB8C00;
+      --orange-soft: #FFF3E0;
+      --purple: #6A1B9A;
+      --purple-soft: #F3E5F5;
+      --chip-bg: #F0F0F0;
+      --chip-text: #424242;
+      --shadow-1: 0px 2px 4px -1px rgba(0,0,0,.12), 0px 4px 5px 0px rgba(0,0,0,.08), 0px 1px 10px 0px rgba(0,0,0,.06);
+      --shadow-sm: 0px 1px 3px rgba(0,0,0,.08);
+      --radius: 8px;
+      --radius-sm: 4px;
+      --sidebar-width: 200px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Pretendard', -apple-system, 'Apple SD Gothic Neo', BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg-page);
+      color: var(--primary-text);
+      font-size: 13px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ─── HEADER (AppBar) ─── */
+    .appbar {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: var(--bg-surface);
+      box-shadow: var(--shadow-1);
+      height: 56px;
+      display: flex;
+      align-items: center;
+      padding: 0 16px 0 0;
+      gap: 0;
+    }
+
+    /* Logo zone */
+    .appbar-logo {
+      width: var(--sidebar-width);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      gap: 8px;
+      height: 100%;
+      border-right: 1px solid var(--border);
+    }
+    .logo-avatar {
+      width: 34px; height: 34px;
+      background: var(--bg-page);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .logo-avatar svg { width: 30px; height: 30px; }
+    .logo-text {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -.4px;
+      color: var(--primary-text);
+    }
+    .logo-arrow {
+      width: 18px; height: 18px;
+      color: var(--muted-text);
+      margin-left: 2px;
+    }
+
+    /* Search */
+    .appbar-search {
+      flex: 1;
+      padding: 0 16px;
+      max-width: 560px;
+    }
+    .search-field {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--border-focus);
+      border-radius: var(--radius-sm);
+      padding: 7px 12px;
+      background: var(--bg-surface);
+      color: var(--muted-text);
+      font-size: 13px;
+      font-family: inherit;
+      width: 100%;
+      cursor: text;
+      transition: border-color .15s;
+    }
+    .search-field:focus-within { border-color: var(--primary-text); }
+    .search-field input {
+      border: none; outline: none; background: transparent;
+      font-size: 13px; font-family: inherit; color: var(--primary-text);
+      flex: 1; min-width: 0;
+    }
+    .search-field input::placeholder { color: var(--muted-text); }
+    .search-icon { color: var(--muted-text); flex-shrink: 0; }
+
+    /* Right actions */
+    .appbar-actions {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 5px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 12px; font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      transition: all .15s;
+      white-space: nowrap;
+    }
+    .btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+    .btn-outlined {
+      background: transparent;
+      border: 1px solid var(--border-focus);
+      color: var(--secondary-text);
+    }
+    .btn-outlined:hover { background: var(--bg-surface-2); }
+    .btn-contained {
+      background: var(--kakao-yellow);
+      color: var(--primary-text);
+      border: 1px solid transparent;
+    }
+    .btn-contained:hover { background: var(--kakao-yellow-hover); }
+    .icon-btn {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: transparent;
+      border: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      color: var(--secondary-text);
+      position: relative;
+      transition: background .15s;
+    }
+    .icon-btn:hover { background: var(--bg-page); }
+    .badge {
+      position: absolute;
+      top: 4px; right: 4px;
+      min-width: 16px; height: 16px;
+      background: var(--kakao-yellow);
+      color: var(--primary-text);
+      font-size: 9px;
+      font-weight: 800;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      padding: 0 3px;
+    }
+    .user-avatar-btn {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--bg-page);
+      border: none;
+      cursor: pointer;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ─── LAYOUT ─── */
+    .layout { display: flex; min-height: calc(100vh - 56px); }
+
+    /* ─── SIDEBAR ─── */
+    .sidebar {
+      width: var(--sidebar-width);
+      background: var(--bg-surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      position: sticky;
+      top: 56px;
+      height: calc(100vh - 56px);
+      overflow-y: auto;
+    }
+    .sidebar-body { flex: 1; padding: 8px 0; }
+    .sidebar-section { margin-bottom: 4px; }
+    .sidebar-section-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px 4px;
+      color: var(--muted-text);
+    }
+    .sidebar-section-header svg { width: 18px; height: 18px; flex-shrink: 0; }
+    .sidebar-section-label { font-size: 11px; font-weight: 600; }
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      padding: 6px 12px 6px 36px;
+      font-size: 13px;
+      color: var(--secondary-text);
+      cursor: pointer;
+      border-radius: 0;
+      transition: all .12s;
+      position: relative;
+    }
+    .sidebar-item:hover { background: var(--bg-page); color: var(--primary-text); }
+    .sidebar-item.active {
+      color: var(--primary-text);
+      font-weight: 600;
+      background: var(--kakao-yellow-soft);
+    }
+    .sidebar-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--kakao-yellow);
+      border-radius: 0 2px 2px 0;
+    }
+    .sidebar-item-new {
+      margin-left: 5px;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--red-mid);
+      background: var(--red-soft);
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+
+    /* Sidebar footer */
+    .sidebar-footer {
+      padding: 12px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .sidebar-footer-link {
+      font-size: 11px;
+      color: var(--muted-text);
+      padding: 2px 0;
+      cursor: pointer;
+    }
+    .sidebar-footer-link:hover { color: var(--secondary-text); }
+    .sidebar-footer-group {
+      font-size: 11px;
+      color: var(--muted-text);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    /* ─── MAIN ─── */
+    .main { flex: 1; min-width: 0; overflow-x: hidden; }
+
+    /* ─── ANNOUNCEMENT TICKER ─── */
+    .ticker {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border);
+      padding: 7px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+    }
+    .ticker-icon { color: var(--muted-text); flex-shrink: 0; }
+    .ticker-chip {
+      background: var(--chip-bg);
+      color: var(--chip-text);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+    .ticker-chip-type {
+      background: var(--kakao-yellow-soft);
+      color: #795500;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+    .ticker-text { color: var(--secondary-text); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ticker-date { color: var(--muted-text); font-size: 11px; flex-shrink: 0; }
+    .ticker-link { color: var(--muted-text); }
+    .ticker-link:hover { color: var(--primary-text); }
+
+    /* ─── DOMAIN HEADER ─── */
+    .domain-header {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 24px 0;
+    }
+    .breadcrumb {
+      display: flex; align-items: center; gap: 4px;
+      font-size: 12px; color: var(--muted-text);
+      margin-bottom: 14px;
+    }
+    .breadcrumb a { color: var(--muted-text); }
+    .breadcrumb a:hover { color: var(--primary-text); }
+    .breadcrumb-sep { font-size: 10px; color: var(--border-focus); }
+
+    .domain-title-row {
+      display: flex; align-items: flex-start; gap: 14px;
+    }
+    .domain-thumb {
+      width: 52px; height: 52px;
+      border-radius: 10px;
+      flex-shrink: 0;
+      overflow: hidden;
+      background: linear-gradient(135deg, #2C2C2C 0%, #484860 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px;
+    }
+    .domain-info { flex: 1; min-width: 0; }
+    .domain-name {
+      font-size: 20px; font-weight: 800; letter-spacing: -.5px;
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    }
+    .chip {
+      display: inline-flex; align-items: center; gap: 3px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px; font-weight: 600;
+    }
+    .chip-default { background: var(--chip-bg); color: var(--chip-text); }
+    .chip-yellow { background: var(--kakao-yellow); color: #5C4400; }
+    .chip-green { background: var(--green-soft); color: var(--green); }
+    .chip-red { background: var(--red-soft); color: var(--red-mid); }
+    .chip-blue { background: var(--blue-soft); color: var(--blue); }
+    .chip-orange { background: var(--orange-soft); color: var(--orange-mid); }
+    .domain-desc {
+      font-size: 13px; color: var(--secondary-text); margin-top: 5px;
+      max-width: 600px; line-height: 1.6;
+    }
+    .domain-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+    .tag {
+      background: var(--bg-page);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 2px 7px;
+      font-size: 11px;
+      color: var(--secondary-text);
+    }
+    .domain-actions {
+      display: flex; align-items: flex-start; gap: 6px; flex-shrink: 0; padding-top: 2px;
+    }
+
+    /* Tab bar */
+    .tab-bar {
+      display: flex; gap: 0;
+      margin-top: 18px;
+    }
+    .tab {
+      padding: 10px 16px;
+      font-size: 13px; font-weight: 500;
+      color: var(--muted-text);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all .12s;
+      white-space: nowrap;
+    }
+    .tab:hover { color: var(--primary-text); }
+    .tab.active { color: var(--primary-text); font-weight: 700; border-bottom-color: var(--primary-text); }
+    .tab-badge {
+      display: inline-block;
+      background: var(--chip-bg); color: var(--chip-text);
+      font-size: 10px; font-weight: 700;
+      border-radius: 10px; padding: 1px 5px;
+      margin-left: 4px; vertical-align: middle;
+    }
+
+    /* ─── STATS BAR ─── */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border);
+    }
+    .stat-cell {
+      padding: 12px 20px;
+      border-right: 1px solid var(--border);
+    }
+    .stat-cell:last-child { border-right: none; }
+    .stat-label { font-size: 11px; color: var(--muted-text); font-weight: 600; margin-bottom: 3px; }
+    .stat-value { font-size: 18px; font-weight: 800; letter-spacing: -.5px; line-height: 1.2; }
+    .stat-sub { font-size: 11px; color: var(--muted-text); margin-top: 2px; }
+    .stat-up { color: var(--green-mid); }
+    .stat-warn { color: var(--orange-mid); }
+
+    /* ─── PAGE BODY ─── */
+    .page-body {
+      padding: 20px 24px;
+      display: flex; gap: 20px;
+      align-items: flex-start;
+    }
+    .col-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+    .col-side { width: 260px; flex-shrink: 0; display: flex; flex-direction: column; gap: 12px; }
+
+    /* ─── CARDS ─── */
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 16px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .card-title {
+      font-size: 13px; font-weight: 700;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .card-title svg { width: 16px; height: 16px; color: var(--secondary-text); }
+    .card-link { font-size: 12px; color: var(--blue); cursor: pointer; }
+    .card-link:hover { text-decoration: underline; }
+    .card-body { padding: 14px 16px; }
+
+    /* Owner grid */
+    .owner-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .owner-label { font-size: 10px; font-weight: 700; color: var(--muted-text); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
+    .person-row { display: flex; align-items: center; gap: 8px; }
+    .avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; flex-shrink: 0;
+    }
+    .av-yellow { background: var(--kakao-yellow); color: #5C4400; }
+    .av-blue { background: var(--blue-soft); color: var(--blue); }
+    .av-green { background: var(--green-soft); color: var(--green); }
+    .av-purple { background: var(--purple-soft); color: var(--purple); }
+    .av-gray { background: var(--chip-bg); color: var(--muted-text); }
+    .person-name { font-size: 13px; font-weight: 600; }
+    .person-email { font-size: 11px; color: var(--muted-text); }
+    .team-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--bg-page);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 5px 10px;
+      font-size: 12px; font-weight: 600;
+    }
+    .team-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--kakao-yellow); }
+
+    /* Quality scorecard */
+    .quality-top { display: flex; gap: 18px; margin-bottom: 14px; }
+    .score-ring {
+      width: 68px; height: 68px; flex-shrink: 0;
+      border-radius: 50%;
+      background: conic-gradient(var(--green-mid) 0% 87%, var(--border) 87% 100%);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .score-ring::after {
+      content: '';
+      position: absolute;
+      width: 52px; height: 52px;
+      background: var(--bg-surface);
+      border-radius: 50%;
+    }
+    .score-num {
+      position: relative; z-index: 1;
+      font-size: 16px; font-weight: 800;
+      color: var(--green-mid);
+    }
+    .score-metrics { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+    .score-label { font-size: 11px; color: var(--muted-text); margin-bottom: 4px; }
+    .metric-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+    .metric-name { width: 70px; color: var(--secondary-text); flex-shrink: 0; }
+    .bar-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 2px; }
+    .bar-green { background: var(--green-mid); }
+    .bar-blue { background: var(--blue); }
+    .bar-yellow { background: #F9B000; }
+    .bar-orange { background: var(--orange-mid); }
+    .metric-val { width: 28px; text-align: right; font-size: 11px; font-weight: 600; }
+
+    .quality-bottom {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--border);
+      padding-top: 12px; gap: 0;
+    }
+    .qm-item { padding: 0 8px; border-right: 1px solid var(--border); }
+    .qm-item:first-child { padding-left: 0; }
+    .qm-item:last-child { border-right: none; }
+    .qm-label { font-size: 10px; color: var(--muted-text); font-weight: 600; text-transform: uppercase; letter-spacing: .4px; margin-bottom: 2px; }
+    .qm-val { font-size: 12px; font-weight: 700; }
+
+    /* Data catalog table */
+    .table-toolbar {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-surface);
+    }
+    .table-search {
+      display: flex; align-items: center; gap: 6px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 5px 10px;
+      flex: 1; max-width: 280px;
+      color: var(--muted-text); font-size: 12px; font-family: inherit;
+      background: var(--bg-page); cursor: text;
+    }
+    .filter-chip {
+      display: flex; align-items: center; gap: 4px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 4px 9px;
+      font-size: 11px; font-weight: 500;
+      color: var(--secondary-text); cursor: pointer; background: var(--bg-surface);
+    }
+    .filter-chip:hover { background: var(--bg-page); }
+    .toolbar-count { margin-left: auto; font-size: 11px; color: var(--muted-text); }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { background: var(--bg-page); }
+    th {
+      padding: 8px 12px; text-align: left;
+      font-size: 11px; font-weight: 700; color: var(--muted-text);
+      text-transform: uppercase; letter-spacing: .4px;
+      border-bottom: 1px solid var(--border); white-space: nowrap;
+    }
+    td {
+      padding: 10px 12px; font-size: 12px;
+      border-bottom: 1px solid var(--border);
+      color: var(--primary-text); vertical-align: middle;
+    }
+    tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: var(--bg-page); }
+    .table-name-cell {
+      display: flex; align-items: center; gap: 7px;
+      font-weight: 600; color: var(--blue); cursor: pointer;
+      font-size: 12px;
+    }
+    .table-name-cell:hover { text-decoration: underline; }
+    .hive-chip {
+      display: inline-flex; align-items: center; gap: 3px;
+      background: var(--chip-bg); color: var(--chip-text);
+      padding: 1px 5px; border-radius: 3px;
+      font-size: 10px; font-weight: 600;
+    }
+    .fresh-dot {
+      display: inline-block; width: 6px; height: 6px;
+      border-radius: 50%; margin-right: 4px; vertical-align: middle;
+    }
+    .dot-green { background: var(--green-mid); }
+    .dot-orange { background: var(--orange-mid); }
+    .dot-red { background: var(--red-mid); }
+    .quality-chip {
+      display: inline-block;
+      padding: 2px 6px; border-radius: 3px;
+      font-size: 11px; font-weight: 700;
+    }
+    .q-high { background: var(--green-soft); color: var(--green); }
+    .q-mid { background: var(--orange-soft); color: var(--orange); }
+    .table-footer {
+      display: flex; align-items: center;
+      padding: 10px 14px;
+      border-top: 1px solid var(--border);
+      background: var(--bg-surface);
+      font-size: 11px; color: var(--muted-text);
+      gap: 8px;
+    }
+
+    /* ─── SIDE CARDS ─── */
+    .info-row {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 8px 0; border-bottom: 1px solid var(--border); gap: 10px;
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-key { font-size: 12px; color: var(--muted-text); flex-shrink: 0; }
+    .info-val { font-size: 12px; font-weight: 500; text-align: right; }
+
+    .access-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 10px; border: 1px solid var(--border);
+      border-radius: var(--radius-sm); margin-bottom: 6px;
+      cursor: pointer; transition: all .12s;
+    }
+    .access-item:hover { border-color: #aaa; background: var(--bg-page); }
+    .access-icon { font-size: 16px; }
+    .access-text { flex: 1; }
+    .access-name { font-size: 12px; font-weight: 700; }
+    .access-desc { font-size: 11px; color: var(--muted-text); }
+    .access-count { font-size: 13px; font-weight: 700; color: var(--secondary-text); }
+
+    .sla-row {
+      display: flex; align-items: flex-start; gap: 8px;
+      padding: 8px 0; border-bottom: 1px solid var(--border);
+    }
+    .sla-row:last-child { border-bottom: none; }
+    .sla-icon { font-size: 14px; margin-top: 1px; flex-shrink: 0; }
+    .sla-key { font-size: 11px; color: var(--muted-text); }
+    .sla-val { font-size: 12px; font-weight: 600; }
+
+    .activity-item {
+      display: flex; gap: 8px;
+      padding: 8px 0; border-bottom: 1px solid var(--border);
+    }
+    .activity-item:last-child { border-bottom: none; }
+    .act-dot { width: 7px; height: 7px; border-radius: 50%; margin-top: 4px; flex-shrink: 0; }
+    .act-text { font-size: 12px; }
+    .act-text strong { font-weight: 600; }
+    .act-time { font-size: 11px; color: var(--muted-text); margin-top: 1px; }
+
+    .full-btn {
+      width: 100%;
+      text-align: center;
+      justify-content: center;
+      margin-top: 8px;
+      padding: 7px 12px;
+      font-size: 12px; font-weight: 700;
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 1100px) { .col-side { display: none; } }
+    @media (max-width: 860px) { .sidebar { display: none; } .page-body { padding: 14px; } }
+    @media (max-width: 640px) { .stats-bar { grid-template-columns: 1fr 1fr; } .owner-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<!-- ═══ HEADER (AppBar) ═══ -->
+<header class="appbar">
+  <!-- Logo -->
+  <div class="appbar-logo">
+    <div class="logo-avatar">
+      <!-- KDP robot SVG (simplified from original) -->
+      <svg viewBox="0 0 50 47" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 28.9C0 17.5 3.4 9.5 14.3 7.5C16.5 7.1 19.3 6.4 25 6.4C30.7 6.4 33.5 7.1 35.7 7.5C46.6 9.5 50 17.5 50 28.9V32.5C50 40.4 43.6 45.4 35.7 45.4H14.3C6.4 45.4 0 40.4 0 32.5V28.9Z" fill="#E0E0E0"/>
+        <path d="M4 28C4 21.7 9.7 17 15.9 17.6C18.9 17.9 22 18.1 25 18.1C28 18.1 31.1 17.9 34.1 17.6C40.3 17 46 21.7 46 28C46 33.8 42 38.9 36.2 39.5C33.1 39.8 29.3 40 25 40C20.7 40 16.9 39.8 13.8 39.5C8 38.9 4 33.8 4 28Z" fill="#3C3C46"/>
+        <ellipse cx="17.1" cy="29.3" rx="4.3" ry="5" fill="#C4FF3A"/>
+        <ellipse cx="32.9" cy="29.3" rx="4.3" ry="5" fill="#C4FF3A"/>
+      </svg>
+    </div>
+    <span class="logo-text">KDP</span>
+    <svg class="logo-arrow" viewBox="0 0 24 24" fill="none"><path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+  </div>
+
+  <!-- Search -->
+  <div class="appbar-search">
+    <div class="search-field">
+      <svg class="search-icon" width="15" height="16" viewBox="0 0 15 16" fill="none">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M11.09 7.22C11.09 9.87 8.94 12.01 6.29 12.01C3.65 12.01 1.5 9.87 1.5 7.22C1.5 4.57 3.65 2.42 6.29 2.42C8.94 2.42 11.09 4.57 11.09 7.22ZM10.18 12.17C9.11 13.01 7.76 13.51 6.29 13.51C2.82 13.51 0 10.7 0 7.22C0 3.74 2.82 0.92 6.29 0.92C9.77 0.92 12.59 3.74 12.59 7.22C12.59 8.69 12.09 10.04 11.24 11.11L13.93 13.8C14.22 14.09 14.22 14.56 13.93 14.86C13.64 15.15 13.16 15.15 12.87 14.86L10.18 12.17Z" fill="currentColor"/>
+      </svg>
+      <input type="text" placeholder='"오픈채팅에 참여하고 있는 유저 수"라고 질의해보세요.' />
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="appbar-actions">
+    <button class="btn btn-outlined">
+      <svg viewBox="0 0 18 18" fill="none"><path d="M13.5 7.4H5.11C4.5 7.4 4 7.94 4 8.6V13.8C4 14.46 4.5 15 5.11 15H12.89C13.5 15 14 14.46 14 13.8V11M6.22 7.4V6C6.22 5.2 6.51 4.44 7.04 3.88C7.56 3.32 8.26 3 9 3C9.74 3 10.44 3.32 10.96 3.88C11.49 4.44 11.78 5.2 11.78 6V7.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 10L9 12L13.5 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      권한 신청
+    </button>
+    <button class="btn btn-contained">
+      <svg viewBox="0 0 18 18" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.09 6.48C6.44 5.06 7.72 4 9.25 4C10.46 4 11.52 4.66 12.08 5.65C12.2 5.86 12.41 5.99 12.64 6.02C14.25 6.22 15.5 7.59 15.5 9.25C15.5 11.04 14.04 12.5 12.25 12.5C11.84 12.5 11.5 12.84 11.5 13.25C11.5 13.66 11.84 14 12.25 14C14.87 14 17 11.87 17 9.25C17 6.95 15.36 5.03 13.19 4.59C12.33 3.33 10.89 2.5 9.25 2.5C7.24 2.5 5.53 3.74 4.83 5.5C4.81 5.5 4.78 5.5 4.75 5.5C2.4 5.5 0.5 7.4 0.5 9.75C0.5 10.99 1.16 12.06 2.04 12.8C2.92 13.54 4.09 14 5.25 14C5.66 14 6 13.66 6 13.25C6 12.84 5.66 12.5 5.25 12.5C4.48 12.5 3.64 12.18 3.01 11.65C2.37 11.12 2 10.44 2 9.75C2 8.23 3.23 7 4.75 7C4.92 7 5.08 7.01 5.23 7.04C5.62 7.11 6 6.86 6.09 6.48ZM9.28 7.72C8.99 7.43 8.51 7.43 8.22 7.72L6.22 9.72C5.93 10.01 5.93 10.49 6.22 10.78C6.51 11.07 6.99 11.07 7.28 10.78L8 10.06V14.25C8 14.66 8.34 15 8.75 15C9.16 15 9.5 14.66 9.5 14.25V10.06L10.22 10.78C10.51 11.07 10.99 11.07 11.28 10.78C11.57 10.49 11.57 10.01 11.28 9.72L9.28 7.72Z" fill="currentColor"/></svg>
+      데이터 등록
+    </button>
+    <button class="icon-btn" aria-label="데이터 바구니">
+      <svg width="20" height="21" viewBox="0 0 22 23" fill="none"><path d="M1 8.5H21L19 22.25H3L1 8.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M6 11V6.33C6 3.39 8.24 1 11 1C13.76 1 16 3.39 16 6.33V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span class="badge">2</span>
+    </button>
+    <button class="icon-btn" aria-label="공지사항">
+      <svg width="20" height="21" viewBox="0 0 22 21" fill="none"><path d="M5 14H3C3 14 1 13 1 9C1 5 3 5 3 5L11 4C11 4 11.87 1.58 14 1C15.13 0.69 17 1 17 1V17C17 17 15.13 17.31 14 17C11.87 16.42 11 14 11 14H9M5 14H9M5 14L4 20H8L9 14" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M19 12C20.5 11.5 21 10 21 9C21 8 20.5 6.5 19 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+    <button class="user-avatar-btn" aria-label="프로필">
+      <div class="avatar av-yellow" style="width:32px;height:32px;font-size:12px;border-radius:50%">트</div>
+    </button>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <aside class="sidebar">
+    <div class="sidebar-body">
+
+      <!-- 데이터 탐색 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-header">
+          <svg viewBox="0 0 18 18" fill="none"><path d="M9 16.5C13.14 16.5 16.5 13.14 16.5 9C16.5 4.86 13.14 1.5 9 1.5C4.86 1.5 1.5 4.86 1.5 9C1.5 13.14 4.86 16.5 9 16.5Z" stroke="currentColor" stroke-width="1.5"/><path d="M12.18 5.82L10.59 10.59L5.82 12.18L7.41 7.41L12.18 5.82Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <span class="sidebar-section-label">데이터 탐색</span>
+        </div>
+        <a class="sidebar-item" href="#">데이터셋</a>
+      </div>
+
+      <!-- 데이터 관리 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-header">
+          <svg viewBox="0 0 18 18" fill="none"><path d="M17 4.1C17 5.26 14.31 6.2 11 6.2C7.69 6.2 5 5.26 5 4.1M17 4.1C17 2.94 14.31 2 11 2C7.69 2 5 2.94 5 4.1M17 4.1V13.9C17 15.06 14.33 16 11 16C7.67 16 5 15.06 5 13.9V4.1M17 9C17 10.16 14.33 11.1 11 11.1C7.67 11.1 5 10.16 5 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <span class="sidebar-section-label">데이터 관리</span>
+        </div>
+        <a class="sidebar-item active" href="#">도메인 스페이스</a>
+        <a class="sidebar-item" href="#">데이터 등록</a>
+        <a class="sidebar-item" href="#">담당 데이터</a>
+        <a class="sidebar-item" href="#">내 그룹 관리</a>
+        <a class="sidebar-item" href="#">리스크 관리</a>
+      </div>
+
+      <!-- 권한 관리 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-header">
+          <svg viewBox="0 0 18 18" fill="none"><path d="M10 10C8.5 9.5 7.5 9.5 6 10C4.5 10.5 3.72 10.86 2.88 12C2.35 12.72 2 14.2 2 15V16.5C2.5 16.5 5 16.5 9 16.5M12 5.5C12 7.34 11 9.31 8 9.31C5 9.31 4 7.34 4 5.5C4 3.66 6 1.84 8 1.84C10 1.84 12 3.5 12 5.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10.56 12.6V11C10.56 10.47 10.76 9.96 11.13 9.59C11.49 9.21 11.98 9 12.5 9C13.02 9 13.51 9.21 13.87 9.59C14.24 9.96 14.44 10.47 14.44 11V12.6M9.78 12.6H15.22C15.65 12.6 16 12.96 16 13.4V16.2C16 16.64 15.65 17 15.22 17H9.78C9.35 17 9 16.64 9 16.2V13.4C9 12.96 9.35 12.6 9.78 12.6Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <span class="sidebar-section-label">권한 관리</span>
+        </div>
+        <a class="sidebar-item" href="#">권한 신청</a>
+        <a class="sidebar-item" href="#">권한 신청/보유 내역</a>
+        <a class="sidebar-item" href="#">카프카 권한 보유 내역</a>
+        <a class="sidebar-item" href="#">권한 부여</a>
+      </div>
+    </div>
+
+    <!-- Sidebar footer -->
+    <div class="sidebar-footer">
+      <span class="sidebar-footer-link">사용 가이드</span>
+      <span class="sidebar-footer-link">문의 아지트</span>
+      <span class="sidebar-footer-link">신규 데이터 요청</span>
+      <a class="sidebar-footer-link" href="#">카카오 데이터 정책</a>
+      <a class="sidebar-footer-link" href="#">그룹사 데이터 이용</a>
+      <span class="sidebar-footer-group">담당그룹 @@kdp</span>
+    </div>
+  </aside>
+
+  <!-- ═══ MAIN ═══ -->
+  <main class="main">
+
+    <!-- Announcement ticker -->
+    <div class="ticker">
+      <svg class="ticker-icon" width="15" height="16" viewBox="0 0 15 16" fill="none">
+        <path d="M14.98 8L5 15C5 15 1 19 5 19L19 19" fill="none" stroke="#9E9E9E" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+      <span class="ticker-chip">데이터셋</span>
+      <span class="ticker-chip-type">안내</span>
+      <span class="ticker-text">[안내] bi_lake.talk_msg_reaction NEW 리액션 지표 추가</span>
+      <span class="ticker-date">2026-06-04 18:03</span>
+      <a class="ticker-link" href="#">
+        <svg width="14" height="14" viewBox="0 0 18 18" fill="none"><path d="M13.5 9.75V14.25C13.5 14.65 13.34 15.03 13.06 15.31C12.78 15.59 12.4 15.75 12 15.75H3.75C3.35 15.75 2.97 15.59 2.69 15.31C2.41 15.03 2.25 14.65 2.25 14.25V6C2.25 5.6 2.41 5.22 2.69 4.94C2.97 4.66 3.35 4.5 3.75 4.5H8.25M11.25 2.25H15.75M15.75 2.25V6.75M15.75 2.25L7.5 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+
+    <!-- Domain Header -->
+    <div class="domain-header">
+      <div class="breadcrumb">
+        <a href="#">홈</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="#">데이터 관리</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="#">도메인 스페이스</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>카카오톡</span>
+      </div>
+
+      <div class="domain-title-row">
+        <div class="domain-thumb">💛</div>
+        <div class="domain-info">
+          <div class="domain-name">
+            카카오톡 도메인
+            <span class="chip chip-green">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              인증됨
+            </span>
+            <span class="chip chip-yellow">Core Domain</span>
+          </div>
+          <div class="domain-desc">
+            카카오톡 서비스에서 발생하는 모든 사용자 행동, 메시지, 채널, 친구 관계 데이터를 포함합니다.
+            DAU/MAU, 메시지 송수신, 채팅방, 오픈채팅 등 핵심 KPI 지표의 원천 도메인입니다.
+          </div>
+          <div class="domain-tags">
+            <span class="tag">#messaging</span>
+            <span class="tag">#user-behavior</span>
+            <span class="tag">#channel</span>
+            <span class="tag">#openchat</span>
+            <span class="tag">#dau</span>
+          </div>
+        </div>
+        <div class="domain-actions">
+          <button class="btn btn-outlined">
+            <svg viewBox="0 0 18 18" fill="none" width="14" height="14"><path d="M9 2L11.09 6.26L15.82 6.93L12.41 10.24L13.18 15L9 12.77L4.82 15L5.59 10.24L2.18 6.93L6.91 6.26L9 2Z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            즐겨찾기
+          </button>
+          <button class="btn btn-outlined">
+            <svg viewBox="0 0 18 18" fill="none" width="14" height="14"><path d="M13.5 9.75V14.25C13.5 14.65 13.34 15.03 13.06 15.31C12.78 15.59 12.4 15.75 12 15.75H3.75C3.35 15.75 2.97 15.59 2.69 15.31C2.41 15.03 2.25 14.65 2.25 14.25V6C2.25 5.6 2.41 5.22 2.69 4.94C2.97 4.66 3.35 4.5 3.75 4.5H8.25M11.25 2.25H15.75V6.75M15.75 2.25L7.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            공유
+          </button>
+          <button class="btn btn-contained">
+            <svg viewBox="0 0 18 18" fill="none" width="14" height="14"><path d="M13.5 7.4H5.11C4.5 7.4 4 7.94 4 8.6V13.8C4 14.46 4.5 15 5.11 15H12.89C13.5 15 14 14.46 14 13.8V11M6.22 7.4V6C6.22 5.2 6.51 4.44 7.04 3.88C7.56 3.32 8.26 3 9 3C9.74 3 10.44 3.32 10.96 3.88C11.49 4.44 11.78 5.2 11.78 6V7.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 10L9 12L13.5 7.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            접근 신청
+          </button>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tab-bar">
+        <div class="tab active">개요</div>
+        <div class="tab">데이터 목록 <span class="tab-badge">142</span></div>
+        <div class="tab">파이프라인 <span class="tab-badge">38</span></div>
+        <div class="tab">품질 리포트</div>
+        <div class="tab">접근 정책</div>
+        <div class="tab">변경 이력</div>
+      </div>
+    </div>
+
+    <!-- Stats bar -->
+    <div class="stats-bar">
+      <div class="stat-cell">
+        <div class="stat-label">테이블</div>
+        <div class="stat-value">142</div>
+        <div class="stat-sub stat-up">↑ 지난달 대비 +8</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-label">일일 적재량</div>
+        <div class="stat-value">2.4TB</div>
+        <div class="stat-sub">평균 / day</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-label">품질 점수</div>
+        <div class="stat-value" style="color: var(--green-mid)">87</div>
+        <div class="stat-sub stat-up">전월 대비 ↑ 3점</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-label">이번 달 쿼리</div>
+        <div class="stat-value">12.8K</div>
+        <div class="stat-sub">사용자 347명</div>
+      </div>
+    </div>
+
+    <!-- Page body -->
+    <div class="page-body">
+
+      <!-- Main column -->
+      <div class="col-main">
+
+        <!-- Ownership card -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <svg viewBox="0 0 18 18" fill="none"><path d="M9 9C11.07 9 12.75 7.32 12.75 5.25C12.75 3.18 11.07 1.5 9 1.5C6.93 1.5 5.25 3.18 5.25 5.25C5.25 7.32 6.93 9 9 9ZM9 11.25C6.49 11.25 1.5 12.51 1.5 15V16.5H16.5V15C16.5 12.51 11.51 11.25 9 11.25Z" fill="currentColor" opacity=".5"/></svg>
+              오너십 &amp; 책임
+            </div>
+            <button class="btn btn-outlined" style="font-size:11px;padding:4px 9px;">수정 요청</button>
+          </div>
+          <div class="card-body">
+            <div class="owner-grid">
+              <div>
+                <div class="owner-label">도메인 오너</div>
+                <div class="person-row">
+                  <div class="avatar av-yellow">김</div>
+                  <div>
+                    <div class="person-name">김도환</div>
+                    <div class="person-email">dohwan.kim@kakao.com</div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="owner-label">데이터 스튜어드</div>
+                <div class="person-row">
+                  <div class="avatar av-blue">이</div>
+                  <div>
+                    <div class="person-name">이수진</div>
+                    <div class="person-email">sujin.lee@kakao.com</div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="owner-label">담당 팀</div>
+                <div class="team-chip">
+                  <div class="team-dot"></div>
+                  카카오톡 데이터플랫폼팀
+                </div>
+              </div>
+              <div>
+                <div class="owner-label">도메인 전문가 (SME)</div>
+                <div class="person-row" style="gap:4px; margin-top:2px;">
+                  <div class="avatar av-green" style="width:26px;height:26px;font-size:10px;">박</div>
+                  <div class="avatar av-purple" style="width:26px;height:26px;font-size:10px;">최</div>
+                  <div class="avatar av-gray" style="width:26px;height:26px;font-size:10px;">정</div>
+                  <div class="avatar av-gray" style="width:26px;height:26px;font-size:10px;font-size:9px;">+5</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quality card -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <svg viewBox="0 0 18 18" fill="none"><path d="M3 3H15V15H3V3Z" stroke="currentColor" stroke-width="1.5" opacity=".5"/><path d="M6 9L8 11L12 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              데이터 품질
+            </div>
+            <a class="card-link" href="#">전체 리포트 →</a>
+          </div>
+          <div class="card-body">
+            <div class="quality-top">
+              <div class="score-ring"><div class="score-num">87</div></div>
+              <div class="score-metrics">
+                <div class="score-label">종합 품질 점수 (100점 기준)</div>
+                <div class="metric-row">
+                  <span class="metric-name">완전성</span>
+                  <div class="bar-track"><div class="bar-fill bar-green" style="width:94%"></div></div>
+                  <span class="metric-val">94%</span>
+                </div>
+                <div class="metric-row">
+                  <span class="metric-name">정확성</span>
+                  <div class="bar-track"><div class="bar-fill bar-blue" style="width:88%"></div></div>
+                  <span class="metric-val">88%</span>
+                </div>
+                <div class="metric-row">
+                  <span class="metric-name">최신성</span>
+                  <div class="bar-track"><div class="bar-fill bar-yellow" style="width:91%"></div></div>
+                  <span class="metric-val">91%</span>
+                </div>
+                <div class="metric-row">
+                  <span class="metric-name">일관성</span>
+                  <div class="bar-track"><div class="bar-fill bar-orange" style="width:73%"></div></div>
+                  <span class="metric-val">73%</span>
+                </div>
+              </div>
+            </div>
+            <div class="quality-bottom">
+              <div class="qm-item">
+                <div class="qm-label">SLA</div>
+                <div class="qm-val">매일 06:00</div>
+              </div>
+              <div class="qm-item">
+                <div class="qm-label">SLA 준수율 (30일)</div>
+                <div class="qm-val" style="color:var(--green-mid)">99.1%</div>
+              </div>
+              <div class="qm-item">
+                <div class="qm-label">미해결 이슈</div>
+                <div class="qm-val" style="color:var(--orange-mid)">⚠ 3건</div>
+              </div>
+              <div class="qm-item">
+                <div class="qm-label">마지막 점검</div>
+                <div class="qm-val">2시간 전</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data catalog card -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <svg viewBox="0 0 18 18" fill="none"><path d="M2 3H16V5H2V3ZM2 7H16V9H2V7ZM2 11H16V13H2V11ZM2 15H10V17H2V15Z" fill="currentColor" opacity=".5"/></svg>
+              데이터 카탈로그
+            </div>
+          </div>
+          <div class="table-toolbar">
+            <div class="table-search">
+              <svg width="13" height="13" viewBox="0 0 15 16" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M11.09 7.22C11.09 9.87 8.94 12.01 6.29 12.01C3.65 12.01 1.5 9.87 1.5 7.22C1.5 4.57 3.65 2.42 6.29 2.42C8.94 2.42 11.09 4.57 11.09 7.22ZM10.18 12.17C9.11 13.01 7.76 13.51 6.29 13.51C2.82 13.51 0 10.7 0 7.22C0 3.74 2.82 0.92 6.29 0.92C9.77 0.92 12.59 3.74 12.59 7.22C12.59 8.69 12.09 10.04 11.24 11.11L13.93 13.8C14.22 14.09 14.22 14.56 13.93 14.86C13.64 15.15 13.16 15.15 12.87 14.86L10.18 12.17Z" fill="currentColor"/>
+              </svg>
+              테이블 / 컬럼 검색...
+            </div>
+            <div class="filter-chip">유형 ▾</div>
+            <div class="filter-chip">접근 등급 ▾</div>
+            <div class="filter-chip">품질 ▾</div>
+            <span class="toolbar-count">142개 테이블</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>테이블명</th>
+                  <th>설명</th>
+                  <th>유형</th>
+                  <th>접근 등급</th>
+                  <th>최신성</th>
+                  <th>품질</th>
+                  <th>일일 행수</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><div class="table-name-cell"><svg width="14" height="14" viewBox="0 0 24 24" data-testid="HiveIcon" fill="currentColor" style="color:#9E9E9E"><path d="m13.79 8 1.8-3-1.8-3h-3.58l-1.8 3 1.8 3zm-3.58 1-1.8 3 1.8 3h3.58l1.8-3-1.8-3zm6.24 2.51h3.59l1.79-3-1.79-3h-3.59l-1.8 3zm3.59 1h-3.59l-1.8 3 1.8 3h3.59l1.79-3zm-12.49-1 1.8-3-1.8-3H3.96l-1.79 3 1.79 3zm0 1H3.96l-1.79 3 1.79 3h3.59l1.8-3zM10.21 16l-1.8 3 1.8 3h3.58l1.8-3-1.8-3z"/></svg>kt_user_daily_summary</div></td>
+                  <td style="color:var(--secondary-text);max-width:200px">사용자 일별 활동 요약 (DAU 지표 원천)</td>
+                  <td><span class="chip chip-default">집계</span></td>
+                  <td><span class="chip chip-green">Internal</span></td>
+                  <td><span class="fresh-dot dot-green"></span>1시간 전</td>
+                  <td><span class="quality-chip q-high">98</span></td>
+                  <td style="color:var(--muted-text)">약 4.2억</td>
+                </tr>
+                <tr>
+                  <td><div class="table-name-cell"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="color:#9E9E9E"><path d="m13.79 8 1.8-3-1.8-3h-3.58l-1.8 3 1.8 3zm-3.58 1-1.8 3 1.8 3h3.58l1.8-3-1.8-3zm6.24 2.51h3.59l1.79-3-1.79-3h-3.59l-1.8 3zm3.59 1h-3.59l-1.8 3 1.8 3h3.59l1.79-3zm-12.49-1 1.8-3-1.8-3H3.96l-1.79 3 1.79 3zm0 1H3.96l-1.79 3 1.79 3h3.59l1.8-3zM10.21 16l-1.8 3 1.8 3h3.58l1.8-3-1.8-3z"/></svg>kt_message_event_log</div></td>
+                  <td style="color:var(--secondary-text);max-width:200px">메시지 송수신 원시 이벤트 로그</td>
+                  <td><span class="chip chip-default">원시</span></td>
+                  <td><span class="chip chip-orange">Restricted</span></td>
+                  <td><span class="fresh-dot dot-green"></span>2시간 전</td>
+                  <td><span class="quality-chip q-high">91</span></td>
+                  <td style="color:var(--muted-text)">약 28억</td>
+                </tr>
+                <tr>
+                  <td><div class="table-name-cell"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="color:#9E9E9E"><path d="m13.79 8 1.8-3-1.8-3h-3.58l-1.8 3 1.8 3zm-3.58 1-1.8 3 1.8 3h3.58l1.8-3-1.8-3zm6.24 2.51h3.59l1.79-3-1.79-3h-3.59l-1.8 3zm3.59 1h-3.59l-1.8 3 1.8 3h3.59l1.79-3zm-12.49-1 1.8-3-1.8-3H3.96l-1.79 3 1.79 3zm0 1H3.96l-1.79 3 1.79 3h3.59l1.8-3zM10.21 16l-1.8 3 1.8 3h3.58l1.8-3-1.8-3z"/></svg>kt_chatroom_stats</div></td>
+                  <td style="color:var(--secondary-text);max-width:200px">채팅방 생성/종료 및 참여자 통계</td>
+                  <td><span class="chip chip-default">집계</span></td>
+                  <td><span class="chip chip-green">Internal</span></td>
+                  <td><span class="fresh-dot dot-orange"></span>26시간 전</td>
+                  <td><span class="quality-chip q-mid">74</span></td>
+                  <td style="color:var(--muted-text)">약 1.1억</td>
+                </tr>
+                <tr>
+                  <td><div class="table-name-cell"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="color:#9E9E9E"><path d="m13.79 8 1.8-3-1.8-3h-3.58l-1.8 3 1.8 3zm-3.58 1-1.8 3 1.8 3h3.58l1.8-3-1.8-3zm6.24 2.51h3.59l1.79-3-1.79-3h-3.59l-1.8 3zm3.59 1h-3.59l-1.8 3 1.8 3h3.59l1.79-3zm-12.49-1 1.8-3-1.8-3H3.96l-1.79 3 1.79 3zm0 1H3.96l-1.79 3 1.79 3h3.59l1.8-3zM10.21 16l-1.8 3 1.8 3h3.58l1.8-3-1.8-3z"/></svg>kt_openchat_daily</div></td>
+                  <td style="color:var(--secondary-text);max-width:200px">오픈채팅 일별 집계 (참여, 탈퇴, 메시지)</td>
+                  <td><span class="chip chip-default">집계</span></td>
+                  <td><span class="chip chip-green">Internal</span></td>
+                  <td><span class="fresh-dot dot-green"></span>3시간 전</td>
+                  <td><span class="quality-chip q-high">89</span></td>
+                  <td style="color:var(--muted-text)">약 3,800만</td>
+                </tr>
+                <tr>
+                  <td><div class="table-name-cell"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="color:#9E9E9E"><path d="m13.79 8 1.8-3-1.8-3h-3.58l-1.8 3 1.8 3zm-3.58 1-1.8 3 1.8 3h3.58l1.8-3-1.8-3zm6.24 2.51h3.59l1.79-3-1.79-3h-3.59l-1.8 3zm3.59 1h-3.59l-1.8 3 1.8 3h3.59l1.79-3zm-12.49-1 1.8-3-1.8-3H3.96l-1.79 3 1.79 3zm0 1H3.96l-1.79 3 1.79 3h3.59l1.8-3zM10.21 16l-1.8 3 1.8 3h3.58l1.8-3-1.8-3z"/></svg>kt_friend_graph_snapshot</div></td>
+                  <td style="color:var(--secondary-text);max-width:200px">친구 관계 그래프 주간 스냅샷</td>
+                  <td><span class="chip chip-default">스냅샷</span></td>
+                  <td><span class="chip chip-red">Sensitive</span></td>
+                  <td><span class="fresh-dot dot-orange"></span>5일 전</td>
+                  <td><span class="quality-chip q-high">95</span></td>
+                  <td style="color:var(--muted-text)">주 1회</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-footer">
+            <span>1 – 5 / 142</span>
+            <div style="margin-left:auto;display:flex;gap:6px;">
+              <button class="btn btn-outlined" style="font-size:11px;padding:4px 9px;">← 이전</button>
+              <button class="btn btn-outlined" style="font-size:11px;padding:4px 9px;">다음 →</button>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /col-main -->
+
+      <!-- Side column -->
+      <div class="col-side">
+
+        <!-- Access Policy -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <svg viewBox="0 0 18 18" fill="none"><path d="M13.5 7.4H5.11C4.5 7.4 4 7.94 4 8.6V13.8C4 14.46 4.5 15 5.11 15H12.89C13.5 15 14 14.46 14 13.8V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.22 7.4V6C6.22 5.2 6.51 4.44 7.04 3.88C7.56 3.32 8.26 3 9 3C9.74 3 10.44 3.32 10.96 3.88C11.49 4.44 11.78 5.2 11.78 6V7.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              접근 정책
+            </div>
+          </div>
+          <div class="card-body" style="padding:12px;">
+            <div class="access-item">
+              <span class="access-icon">🟢</span>
+              <div class="access-text">
+                <div class="access-name">Internal</div>
+                <div class="access-desc">전사 임직원 기본 접근</div>
+              </div>
+              <span class="access-count">86</span>
+            </div>
+            <div class="access-item">
+              <span class="access-icon">🟡</span>
+              <div class="access-text">
+                <div class="access-name">Restricted</div>
+                <div class="access-desc">팀장 승인 필요</div>
+              </div>
+              <span class="access-count">42</span>
+            </div>
+            <div class="access-item" style="margin-bottom:0">
+              <span class="access-icon">🔴</span>
+              <div class="access-text">
+                <div class="access-name">Sensitive</div>
+                <div class="access-desc">CISO 승인 + 교육 필요</div>
+              </div>
+              <span class="access-count">14</span>
+            </div>
+            <button class="btn btn-contained full-btn">+ 접근 신청하기</button>
+          </div>
+        </div>
+
+        <!-- SLA -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.5"/><path d="M9 5V9L12 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              SLA &amp; 적재 주기
+            </div>
+          </div>
+          <div class="card-body" style="padding:4px 14px;">
+            <div class="sla-row">
+              <span class="sla-icon">📅</span>
+              <div><div class="sla-key">기본 적재 주기</div><div class="sla-val">매일 (Daily)</div></div>
+            </div>
+            <div class="sla-row">
+              <span class="sla-icon">🕕</span>
+              <div><div class="sla-key">완료 보장 시각</div><div class="sla-val">오전 06:00 KST</div></div>
+            </div>
+            <div class="sla-row">
+              <span class="sla-icon">📡</span>
+              <div><div class="sla-key">지연 알림</div><div class="sla-val">Slack #kt-data-alert</div></div>
+            </div>
+            <div class="sla-row">
+              <span class="sla-icon">🔄</span>
+              <div><div class="sla-key">보존 기간</div><div class="sla-val">원시 90일 / 집계 3년</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Domain info -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.5"/><path d="M9 8V13M9 6V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              도메인 정보
+            </div>
+          </div>
+          <div class="card-body" style="padding:4px 14px;">
+            <div class="info-row">
+              <span class="info-key">도메인 ID</span>
+              <span class="info-val" style="font-family:monospace;font-size:11px;color:var(--muted-text)">dom_kakaotalk_v2</span>
+            </div>
+            <div class="info-row">
+              <span class="info-key">생성일</span>
+              <span class="info-val">2021-03-15</span>
+            </div>
+            <div class="info-row">
+              <span class="info-key">마지막 수정</span>
+              <span class="info-val">2026-06-01</span>
+            </div>
+            <div class="info-row">
+              <span class="info-key">총 테이블</span>
+              <span class="info-val">142개</span>
+            </div>
+            <div class="info-row">
+              <span class="info-key">연계 도메인</span>
+              <span class="info-val"><span class="chip chip-blue" style="font-size:10px;">카카오페이</span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent activity -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <svg viewBox="0 0 18 18" fill="none"><path d="M9 3V9L12.5 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.5"/></svg>
+              최근 활동
+            </div>
+          </div>
+          <div class="card-body" style="padding:4px 14px;">
+            <div class="activity-item">
+              <div class="act-dot" style="background:var(--green-mid)"></div>
+              <div><div class="act-text"><strong>kt_user_daily_summary</strong> 파티션 적재 완료</div><div class="act-time">2시간 전 · 자동</div></div>
+            </div>
+            <div class="activity-item">
+              <div class="act-dot" style="background:var(--blue)"></div>
+              <div><div class="act-text"><strong>이수진</strong>이 품질 이슈 #312 처리 완료</div><div class="act-time">4시간 전</div></div>
+            </div>
+            <div class="activity-item">
+              <div class="act-dot" style="background:var(--orange-mid)"></div>
+              <div><div class="act-text"><strong>kt_chatroom_stats</strong> SLA 지연 감지</div><div class="act-time">어제 오후 3:12</div></div>
+            </div>
+            <div class="activity-item">
+              <div class="act-dot" style="background:var(--kakao-yellow)"></div>
+              <div><div class="act-text">접근 등급 정책 v2.3 업데이트</div><div class="act-time">3일 전 · 김도환</div></div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /col-side -->
+    </div><!-- /page-body -->
+
+  </main>
+</div><!-- /layout -->
+
+</body>
+</html>
